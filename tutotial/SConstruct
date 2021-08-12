@@ -1,0 +1,15 @@
+#  src = Glob("code/*.c")
+#  src.append("main.c")
+#
+#  inc = ["code"]
+#
+#  Program(
+    #  target = "main",
+    #  source = src,
+    #  CPPPATH = inc)
+
+lib_src = Glob("code/*.c")
+Library(
+    target = "code",
+    source = lib_src
+)
