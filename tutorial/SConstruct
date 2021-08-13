@@ -1,0 +1,14 @@
+SConscript("code/SConscript", variant_dir="output/lib", duplicate=0)
+
+src = Glob("*.c")
+
+inc = ["code"]
+
+Program(
+    target = "main",
+    source = src,
+    CPPPATH = inc,
+    LIBS = ["code"],
+    LIBPATH = ["lib/code"]
+)
+

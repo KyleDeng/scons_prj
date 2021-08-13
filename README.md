@@ -210,3 +210,85 @@ Library(
 
 解决办法是，在子目录中添加`SConscript`文件，并在上层的`SConstruct`中指定`variant_dir`。
 
+增加`code/SConscript`文件：
+```log
+.
+├── code
+│   ├── goodbye.c
+│   ├── goodbye.h
+│   ├── hello.c
+│   ├── hello.h
+│   └── SConscript
+├── main.c
+└── SConstruct
+```
+
+`SConstruct`:
+```python
+V = {"hello": "world"}
+
+SConscript("code/SConscript", variant_dir="lib/code", duplicate=0, exports=V)
+```
+
+`SConscript`:
+```python
+Import('hello')
+print(f'debug {hello}')
+
+lib_src = Glob("./*.c")
+Library(
+    target = "code",
+    source = lib_src
+)
+
+```
+
+执行`scons`后的结果：
+```log
+.
+├── code
+│   ├── goodbye.c
+│   ├── goodbye.h
+│   ├── hello.c
+│   ├── hello.h
+│   └── SConscript
+├── lib
+│   └── code
+│       ├── goodbye.o
+│       ├── hello.o
+│       └── libcode.a
+├── main.c
+└── SConstruct
+```
+
+这样就可以指定生成路径了。
+
+`SConscript()`的基本用法：
+> `SConscript(scripts, [exports, variant_dir, duplicate, must_exist])`
+>
+> 可以使用`export`来向子文件传递变量信息
+>
+> 指定多路径
+>
+> `SConscript(dirs=['sub1', 'sub2'], name='MySConscript')`
+
+## 1.3 链接一个库
+修改`SConstruct`如下：
+```python
+SConscript("code/SConscript", variant_dir="lib/code", duplicate=0)
+
+src = Glob("*.c")
+
+inc = ["code"]
+
+Program(
+    target = "main",
+    source = src,
+    CPPPATH = inc,
+    LIBS = ["code"],
+    LIBPATH = ["lib/code"]
+)
+```
+
+## 1.4 判断是否需要重新编译
+

@@ -1,0 +1,5 @@
+lib_src = Glob("./*.c")
+Library(
+    target = "code",
+    source = lib_src
+)
