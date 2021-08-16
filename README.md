@@ -275,7 +275,7 @@ Library(
 ## 1.3 链接一个库
 修改`SConstruct`如下：
 ```python
-SConscript("code/SConscript", variant_dir="lib/code", duplicate=0)
+SConscript("code/SConscript", variant_dir="output/lib", duplicate=0)
 
 src = Glob("*.c")
 
@@ -286,9 +286,56 @@ Program(
     source = src,
     CPPPATH = inc,
     LIBS = ["code"],
-    LIBPATH = ["lib/code"]
+    LIBPATH = ["output/lib"]
 )
 ```
 
 ## 1.4 判断是否需要重新编译
+SCons依赖`Decider()`方法和一个`.sconsign.dblite`文件来判断是否需要重新编译项目。
+
+默认情况下，相关文件的MD5值发生了变化才会重新编译，
+可以通过`Decider('timestamp-newer')` 来设定依据最后文件的修改时间来判断是否需要重新编译，
+也可以通过`Decider('MD5-tmiestamp')` 来设定只有MD5和时间都变了才编译。
+
+## 1.5 env
+env分为三种
+
+* `external environment`
+
+保存在`os.envrion`中，和scons本身关系不大，保存着一些系统定义的环境变量，例如，`PATH`等。
+
+* `construction environment`
+
+我们有时希望不同的源文件使用不同的编译参数，这个时候可以设置不同的编译环境。
+```python
+env1 = Environment(CXX = 'gcc') # 创建一个env
+print env1["CXX"] # 获取参数
+env2 = env1.Clone(CXX = 'g++')    # 复制一个env
+env1.Replace(CXX = 'g++') # 修改参数
+env1["CXX"] = "clang++"   #再修改参数
+
+env1.MergeFlags("-g") #增加一个flag
+
+env1.Program("hello.c")  # 使用指定环境来编译项目
+```
+
+* `execution environment`
+
+其实就是`construction environment`中的一个变量`ENV`
+```python
+import os
+
+env = Environment()
+print env["ENV"]
+
+env2 = Environment(ENV=os.environ)
+env3 = Environment(ENV = {"PATH" : os.environ["PATH"]})
+```
+
+## 1.6 命令行输入
+通过`ARGUMENTS.get()`方法，可以获取在使用`scons`时的一些用户输入参数，例如：`scons debug=1`。
+```python
+debug = ARGUMENTS.get("debug", 0)
+print(f'debug: {debug}')
+```
 

@@ -1,5 +1,9 @@
+env1 = Environment()
+env1.MergeFlags("-Wall")
+
 lib_src = Glob("./*.c")
-Library(
+env1.Library(
     target = "code",
     source = lib_src
 )
+

@@ -1,14 +1,20 @@
+debug = ARGUMENTS.get("debug", 0)
+print(f'debug: {debug}')
+
+env1 = Environment(CC = 'gcc')
+env1.MergeFlags("-g")
+
 SConscript("code/SConscript", variant_dir="output/lib", duplicate=0)
 
 src = Glob("*.c")
 
 inc = ["code"]
 
-Program(
+env1.Program(
     target = "main",
     source = src,
     CPPPATH = inc,
     LIBS = ["code"],
-    LIBPATH = ["lib/code"]
+    LIBPATH = ["output/lib"]
 )
 
