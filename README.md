@@ -227,7 +227,7 @@ Library(
 ```python
 V = {"hello": "world"}
 
-SConscript("code/SConscript", variant_dir="lib/code", duplicate=0, exports=V)
+SConscript("code/SConscript", variant_dir="output/lib", duplicate=0, exports=V)
 ```
 
 `SConscript`:

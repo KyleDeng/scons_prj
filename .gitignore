@@ -2,6 +2,7 @@
 /tmp
 tutorial/output
 */.sconsign.dblite
+.sconsign.dblite
 
 *.log
 .config*
