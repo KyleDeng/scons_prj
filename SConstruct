@@ -3,6 +3,7 @@
 
 import os
 import shutil
+import pprint
 
 # 编译控制
 CLEAN_FLAG = ARGUMENTS.get('clean', 0)
@@ -32,6 +33,7 @@ V = {
 
 # 包含子目录SConscript
 SConscript("hal/SConscript", variant_dir="output/lib/hal", duplicate=0, exports=V)
+SConscript("sdk/SConscript", variant_dir="output/lib/sdk", duplicate=0, exports=V)
 
 
 # clean
@@ -62,3 +64,7 @@ if PACKAGE_FLAG == '1':
             shutil.copytree(i, pack_inc)
 
     print("----- pack finished -----")
+
+
+# 输出编译信息
+pprint.pprint(V)

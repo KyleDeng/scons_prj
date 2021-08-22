@@ -9,6 +9,9 @@ LOCAL_PATH = Dir('.').srcnode().abspath
 lib_src = Glob("src/*.c")
 lib_inc = os.path.join(LOCAL_PATH, 'include')
 
+TOP['HAL'] = {}
+TOP['HAL']['SRC'] = lib_src
+TOP['HAL']['INC_DIRS'] = [lib_inc]
 TOP['INC_DIRS'].append(lib_inc)
 TOP['LIB_DIRS'].append(HAL_LIB_DIR)
 

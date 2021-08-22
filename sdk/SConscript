@@ -1,0 +1,23 @@
+import os
+
+Import('TOP')
+OUTPUT_LIB_DIR = TOP['OUTPUT_LIB_DIR']
+SDK_LIB_DIR = os.path.join(OUTPUT_LIB_DIR, 'sdk', 'libsdk.a')
+
+
+SDK_DIR = Dir('.').srcnode().abspath
+OUTPUT_LIB_DIR = TOP['OUTPUT_LIB_DIR']
+
+V = {
+    'SDK': {
+        'SDK_DIR': SDK_DIR,
+        'SRC': [],
+        'INC_DIRS': [],
+    }
+}
+
+_, dirs, _ = next(os.walk(SDK_DIR))
+for d in dirs:
+    if os.path.exists(os.path.join(SDK_DIR, d, 'SConscript')):
+        SConscript(f"{d}/SConscript", exports=V)
+
