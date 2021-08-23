@@ -9,6 +9,7 @@ SDK_DIR = Dir('.').srcnode().abspath
 OUTPUT_LIB_DIR = TOP['OUTPUT_LIB_DIR']
 
 V = {
+    'TOP': TOP,
     'SDK': {
         'SDK_DIR': SDK_DIR,
         'SRC': [],
@@ -20,4 +21,18 @@ _, dirs, _ = next(os.walk(SDK_DIR))
 for d in dirs:
     if os.path.exists(os.path.join(SDK_DIR, d, 'SConscript')):
         SConscript(f"{d}/SConscript", exports=V)
+
+
+lib_src = V['SDK']['SRC']
+lib_inc = V['SDK']['INC_DIRS'] + TOP['HAL']['INC_DIRS']
+Library(
+    target = "sdk",
+    source = lib_src,
+    CPPPATH = lib_inc
+)
+
+
+TOP['SDK'] = V['SDK']
+TOP['INC_DIRS'].extend(V['SDK']['INC_DIRS'])
+TOP['LIB_DIRS'].append(SDK_LIB_DIR)
 
