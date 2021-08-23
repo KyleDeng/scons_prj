@@ -36,7 +36,7 @@ Program("hello.c")
 ```
 除了使用`SConstruct`作为配置文件，还可以使用`Sconstruct`、`sconstruct`、`SConscript`。
 
-`Program`是`Scons`中的一个编译方法（build_method），用来告诉`Scons`想要把`hello.c`编译成一个可执行文件。
+`Program`是`Scons`中的一个编译方法（`build_method`），用来告诉`Scons`想要把`hello.c`编译成一个可执行文件。
 
 也可以使用`Program(target_name, "hello.c")`来指定可执行文件的名字。
 
@@ -58,6 +58,9 @@ scons: done building targets.
 ├── hello.o
 └── SConstruct
 ```
+
+指定`target`进行编译：
+> `scons hello.o`
 
 其他操作：
 > `scons -c`：clean

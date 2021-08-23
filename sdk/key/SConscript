@@ -1,0 +1,14 @@
+import os
+
+Import('SDK')
+
+LOCAL_PATH = Dir('.').srcnode().abspath
+
+lib_src = Glob("src/*.c")
+lib_inc = os.path.join(LOCAL_PATH, 'include')
+
+SDK['SRC'].extend(lib_src)
+SDK['INC_DIRS'].append(lib_inc)
+
+
+
