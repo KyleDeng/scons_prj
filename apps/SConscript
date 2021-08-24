@@ -58,7 +58,7 @@ libpath = [
 LIB_INC_DIRS = get_sub_include(os.path.join(PACK_DIR, 'include'))
 
 Program(
-    target = "hello",
+    target = "run",
     source = APP_SRC,
     CPPPATH = APP_INC + LIB_INC_DIRS,
     LIBS = libs,

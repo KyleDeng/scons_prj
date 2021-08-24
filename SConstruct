@@ -2,15 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import shutil
 import pprint
 
 # 编译控制
 CLEAN_FLAG = ARGUMENTS.get('clean', 0)
 PACKAGE_FLAG = ARGUMENTS.get('pack', 0)
+SDK_BUILD = True if 'sdk' in sys.argv else False
+APP_BUILD = True if 'apps' in sys.argv else False
 APP_NAME = ARGUMENTS.get('app_name', '')
 if len(APP_NAME):
     PACKAGE_FLAG = 1
+
 
 # 构造基本信息
 ROOT_DIR = Dir('.').srcnode().abspath
@@ -35,10 +39,15 @@ V = {
 }
 
 
+Default('sdk')
+
+
 # 包含子目录SConscript
 SConscript("hal/SConscript", variant_dir="output/lib/hal", duplicate=0, exports=V)
 SConscript("sdk/SConscript", variant_dir="output/lib/sdk", duplicate=0, exports=V)
-SConscript("apps/SConscript", variant_dir="output/bin/app", duplicate=0, exports=V)
+if APP_BUILD:
+    SConscript("apps/SConscript", variant_dir="output/bin/app", duplicate=0, exports=V)
+print([str(t) for t in BUILD_TARGETS])
 
 
 # clean

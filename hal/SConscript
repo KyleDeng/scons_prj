@@ -15,7 +15,7 @@ TOP['HAL']['INC_DIRS'] = [lib_inc]
 TOP['INC_DIRS'].append(lib_inc)
 TOP['LIB_DIRS'].append(HAL_LIB_DIR)
 
-Library(
+ans = Library(
     target = "hal",
     source = lib_src,
     CPPPATH = lib_inc
