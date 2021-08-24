@@ -1,0 +1,71 @@
+import os
+
+Import('TOP')
+
+APPS_PATH = Dir('.').srcnode().abspath
+APP_NAME = TOP['APP']['APP_NAME']
+TOP_DIR = TOP['ROOT_DIR']
+
+def get_app_name(app_list):
+    print("========================")
+    index = 1
+    for a in app_list:
+        print(f'{index}. {a}')
+    select = input("Please select:")
+    if (not select) or ():
+        select = 0
+    else:
+        select = int(select)
+    ans = app_list[select-1]
+
+    return ans
+
+def get_sub_include(tag_dir):
+    ans = []
+    for root, dirs, files in os.walk(tag_dir):  
+        for d in dirs:
+            if d == "include":
+                ans.append(os.path.join(root, d))
+    return ans
+
+
+if not APP_NAME:
+    _, app_list, _ = next(os.walk(APPS_PATH))
+    APP_NAME = get_app_name(app_list)
+print(f'APP_NAME={APP_NAME}')
+
+V = {
+    'TOP': TOP,
+    'APP': {
+        'SRC': [],
+        'INC_DIRS': [],
+    }
+}
+
+SConscript(f'{APP_NAME}/SConscript', exports=V)
+
+APP_SRC = V['APP']['SRC']
+APP_INC = V['APP']['INC_DIRS']
+
+PACK_DIR = TOP['PACK_DIR']
+libs = [
+    'sdk',
+    'hal',
+]
+libpath = [
+    os.path.join(PACK_DIR, 'lib')
+]
+LIB_INC_DIRS = get_sub_include(os.path.join(PACK_DIR, 'include'))
+
+Program(
+    target = "hello",
+    source = APP_SRC,
+    CPPPATH = APP_INC + LIB_INC_DIRS,
+    LIBS = libs,
+    LIBPATH = libpath,
+)
+
+
+TOP['APP']['APP_NAME'] = APP_NAME
+TOP['APP']['SRC'] = APP_SRC
+TOP['APP']['INC_DIRS'] = APP_INC

@@ -1,0 +1,11 @@
+import os
+
+Import('APP')
+
+LOCAL_PATH = Dir('.').srcnode().abspath
+
+app_src = Glob("src/*.c")
+app_inc = os.path.join(LOCAL_PATH, 'include')
+
+APP['SRC'].extend(app_src)
+APP['INC_DIRS'].append(app_inc)

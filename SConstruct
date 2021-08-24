@@ -8,7 +8,7 @@ import pprint
 # 编译控制
 CLEAN_FLAG = ARGUMENTS.get('clean', 0)
 PACKAGE_FLAG = ARGUMENTS.get('pack', 0)
-APP_NAME = ARGUMENTS.get('app', '')
+APP_NAME = ARGUMENTS.get('app_name', '')
 if len(APP_NAME):
     PACKAGE_FLAG = 1
 
@@ -25,8 +25,12 @@ V = {
         'ROOT_DIR': ROOT_DIR,
         'OUTPUT_DIR': OUTPUT_DIR,
         'OUTPUT_LIB_DIR': OUTPUT_LIB_DIR,
+        'PACK_DIR': PACK_DIR,
         'INC_DIRS': [],
         'LIB_DIRS': [],
+        'APP': {
+            "APP_NAME": APP_NAME,
+        },
     }
 }
 
@@ -34,6 +38,7 @@ V = {
 # 包含子目录SConscript
 SConscript("hal/SConscript", variant_dir="output/lib/hal", duplicate=0, exports=V)
 SConscript("sdk/SConscript", variant_dir="output/lib/sdk", duplicate=0, exports=V)
+SConscript("apps/SConscript", variant_dir="output/bin/app", duplicate=0, exports=V)
 
 
 # clean
