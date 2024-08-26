@@ -1,6 +1,6 @@
-/output
+**/output
+**/.output/
 /tmp
-tutorial/output
 */.sconsign.dblite
 .sconsign.dblite
 
